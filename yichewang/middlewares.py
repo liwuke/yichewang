@@ -16,7 +16,7 @@ from time import sleep
 from itemadapter import is_item,ItemAdapter
 
 
-class TypeDownloadMiddleware :
+class SeleniumDownloadMiddleware :
     @classmethod
     def from_crawler (cls,crawler) :
         # This method is used by Scrapy to create your spiders.
