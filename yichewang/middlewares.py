@@ -4,18 +4,19 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 import random
+import logging
 from scrapy import signals
 from selenium.webdriver import Chrome
 from scrapy.http import HtmlResponse
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.chrome.options import Options
-from time import sleep
+
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item,ItemAdapter
 
-
+logger=logging.getLogger(__name__)
 class SeleniumDownloadMiddleware :
     @classmethod
     def from_crawler (cls,crawler) :
@@ -56,9 +57,9 @@ class SeleniumDownloadMiddleware :
                 ele2 = WebDriverWait (self.driver,6,0.1).until (EC.presence_of_element_located (loc))
             self.driver.execute_script ("arguments[0].click();",ele2)
             type_loc = ('css selector','span.ck-cx-list-wrapper>div.ck-cx-list-content>a>div>div')
-            WebDriverWait (self.driver,10,0.1).until (EC.presence_of_element_located (type_loc)).text
+            WebDriverWait (self.driver,10,0.1).until (EC.presence_of_element_located (type_loc)).text   #更新页面元素的操作
             html = self.driver.page_source
-            self.driver.execute_script ("arguments[0].click();",ele2)
+            self.driver.execute_script ("arguments[0].click();",ele2)   #复原页面
             return HtmlResponse (request.url,body = html,encoding = 'utf8',request = request)
 
 

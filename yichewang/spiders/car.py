@@ -1,6 +1,7 @@
 import scrapy
 import copy
 from yichewang.items import YichewangItem
+from yichewang.middlewares import logger
 from time import sleep
 
 
