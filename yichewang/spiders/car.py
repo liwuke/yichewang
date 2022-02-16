@@ -11,6 +11,7 @@ class CarSpider(scrapy.Spider):
     start_urls = ['https://car.yiche.com']
 
     def parse(self, response):
+        logger.error('hahahha')
         item = YichewangItem()
         alpha_list = response.css('div.brand-list>div')
         sort=1
@@ -28,8 +29,7 @@ class CarSpider(scrapy.Spider):
                 id = brand.css('a>div::attr(data-id)').extract_first()
                 item['type'] = False
                 url = 'https://car.yiche.com/xuanchegongju/?mid=' + str(id)
-                yield scrapy.http.Request(url, callback=self.pages, meta={'item': copy.deepcopy(item)},
-                                          dont_filter=True)
+                yield scrapy.Request(url, callback=self.pages, meta={'item': copy.deepcopy(item)},dont_filter=True)
 
     # def parse(self,response):
     #     url='https://car.yiche.com/xuanchegongju/?mid=77'

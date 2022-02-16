@@ -10,10 +10,14 @@ import pymysql
 
 class YichewangPipeline:
     def open_spider(self,spider):
-        self.connection = pymysql.connect (host = 'localhost',user = 'root',password = 'root',db = 'dict',charset = 'utf8')
-        self.cursor = self.connection.cursor (cursor = pymysql.cursors.SSCursor)
-        self.select_parent_id_sql='select id from car where name = %s'
-        self.name_sql='insert into car(parent_id,name,type) select %s,%s,%s from DUAL where not EXISTS (select name from car where name = %s);commit '
+        try:
+            self.connection = pymysql.connect (host = 'localhost',user = 'root',password = 'root',db = 'dict',charset = 'utf8')
+            self.cursor = self.connection.cursor (cursor = pymysql.cursors.SSCursor)
+            self.select_parent_id_sql='select id from car where name = %s'
+            self.name_sql='insert into car(parent_id,name,type) select %s,%s,%s from DUAL where not EXISTS (select name from car where name = %s);commit '
+        except:
+            self.cursor=None
+            self.connection=None
 
     def close_spider(self,spider):
         self.cursor.close()
